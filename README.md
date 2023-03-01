@@ -1,6 +1,6 @@
-# aiogram-bot-template
-Template for creating scalable bots with aiogram
+# school-bot
+*description is loading...*
 
-### Bot examples:
-- https://github.com/Forden/DiscussRemoverBot (https://t.me/DiscussRemoverBot)
-- https://github.com/Forden/qbittorrent-bot
+### My contacts:
+- Telegram: https://t.me/doniyor_muminov
+- Instagram: https://www.instagram.com/rengoyli/
