@@ -15,3 +15,11 @@ async def bot_start(msg: types.Message):
 async def timetable(call: types.CallbackQuery):
     await call.answer('Ты нажал на расписание пон', show_alert=True)
     await call.answer()
+
+
+async def book(call: types.CallbackQuery):
+    await call.answer('Ты нажал на книги пон', show_alert=True)
+
+
+async def school_news(call: types.CallbackQuery):
+    await call.answer('Ты нажал на школьные новости пон', show_alert=True)
