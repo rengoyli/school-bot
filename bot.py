@@ -1,29 +1,51 @@
+import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher, executor
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.contrib.fsm_storage.redis import RedisStorage2
+from aiogram.types import BotCommand
 
 from handlers import register_handlers
 from filters import register_filters
 # TODO: Add DependencyInjectMiddleware and fix KeyError: 'pg_pool'
-# from middlewares import bind_middlewares , DependencyInjectMiddleware
-
+from middlewares import bind_middlewares  # , DependencyInjectMiddleware
 
 from data.config import BOT_TOKEN
 
 
-async def on_startup(dp: Dispatcher):
+async def set_commands(bot: Bot):
+    commands = [
+        BotCommand(command="/start", description="Старт"),
+        BotCommand(command="/help", description="Помощь")
+    ]
+    await bot.set_my_commands(commands)
+
+
+async def main():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    )
+    logging.error("Starting bot")
+
+    bot = Bot(token=BOT_TOKEN, parse_mode="html")
+    memory = RedisStorage2()
+    dp = Dispatcher(bot, storage=memory)
+
     register_handlers(dp)
     register_filters(dp)
+    bind_middlewares(dp)
 
-    logging.info("[2 / 2] Bot started")
+    await set_commands(bot)
+
+    try:
+        await dp.skip_updates()
+        await dp.start_polling()
+    finally:
+        await dp.storage.close()
+        await dp.storage.wait_closed()
+        await bot.session.close()
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-
-    memory = MemoryStorage()
-    bot = Bot(token=BOT_TOKEN, parse_mode="html")
-    dp = Dispatcher(bot, storage=memory)
-
-    executor.start_polling(dp, on_startup=on_startup, skip_updates=True)
+    asyncio.run(main())
