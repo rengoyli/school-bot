@@ -4,7 +4,7 @@ from handlers.user.help import bot_help
 from handlers.user.start import bot_start, timetable, book, school_news
 
 
-def register_user(dp: Dispatcher):
+def register_user_handler(dp: Dispatcher):
     dp.register_message_handler(bot_start, commands=['start'])
     dp.register_message_handler(bot_help, commands=['help'])
 
