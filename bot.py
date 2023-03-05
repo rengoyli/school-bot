@@ -8,7 +8,7 @@ from aiogram.types import BotCommand
 from handlers import register_handlers
 from filters import register_filters
 # TODO: Add DependencyInjectMiddleware and fix KeyError: 'pg_pool'
-from middlewares import bind_middlewares  # , DependencyInjectMiddleware
+# from middlewares import bind_middlewares
 
 from data.config import BOT_TOKEN
 
@@ -34,7 +34,7 @@ async def main():
 
     register_handlers(dp)
     register_filters(dp)
-    bind_middlewares(dp)
+    # bind_middlewares(dp)
 
     await set_commands(bot)
 
