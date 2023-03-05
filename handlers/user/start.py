@@ -5,19 +5,19 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import ReplyKeyboardRemove
 from aiogram.utils.markdown import hspoiler
 
-from keyboards.default.start import name, grades, characters
+from keyboards.default.start import full_name, grades, class_letters
 from states.user.user_info import UserInfo
 
 
 async def bot_start(msg: types.Message, state: FSMContext):
-    tg_name_btn = name(msg)
+    tg_name_btn = full_name(msg)
     hidden_tip = hspoiler('Вы можете нажать на кнопку, если ваше имя в Telegram по умолчанию устраивает вас.')
     await msg.answer(
         f'Здравствуйте, давайте познакомимся с вами. <i>Как вас зовут? (Введите в формате: <b>Имя Фамилия - на кириллице </b>, '
         f'без дополнительных знаков и цифр.)</i>\n\n<b>{hidden_tip}</b>',
         reply_markup=tg_name_btn)
 
-    await state.set_state(UserInfo.waiting_for_name.state)
+    await state.set_state(UserInfo.waiting_for_full_name.state)
 
 
 async def name_defined(msg: types.Message, state: FSMContext):
@@ -26,8 +26,8 @@ async def name_defined(msg: types.Message, state: FSMContext):
 
     for i in symbols:
         if i in msg.text:
-            await msg.answer('Ошибка! Вы ввели имя в неправильном формате.', reply_markup=name(msg))
-            await state.set_state(UserInfo.waiting_for_name.state)
+            await msg.answer('Ошибка! Вы ввели имя в неправильном формате.', reply_markup=full_name(msg))
+            await state.set_state(UserInfo.waiting_for_full_name.state)
             return
 
     await msg.answer('Тэкс, ваше имя я заполучил. '
@@ -36,11 +36,11 @@ async def name_defined(msg: types.Message, state: FSMContext):
 
     await state.set_state(UserInfo.waiting_for_grade.state)
 
-    await state.update_data({"name": msg.text})
+    await state.update_data({"full_name": msg.text})
 
 
 async def grade_defined(msg: types.Message, state: FSMContext):
-    character = characters()
+    character = class_letters()
     try:
         if not int(msg.text) <= 11 or not int(msg.text) >= 1:
             await msg.answer('Ввод неправильный, попробуйте ввести еще раз.',
@@ -57,16 +57,16 @@ async def grade_defined(msg: types.Message, state: FSMContext):
                      'После этого, приставать к вам я особо не буду. '
                      '<i>Назовите буковку вашего класса пожалуйста. (Буква от "А" до "Г")</i>', reply_markup=character)
 
-    await state.set_state(UserInfo.waiting_for_character.state)
+    await state.set_state(UserInfo.waiting_for_class_letter.state)
 
     await state.update_data({"grade": msg.text})
 
 
-async def character_defined(msg: types.Message, state: FSMContext):
+async def class_letter_defined(msg: types.Message, state: FSMContext):
     _characters = ['А', 'Б', 'В', 'Г']
     if msg.text.lower() not in [x.lower() for x in _characters]:
-        await msg.answer('Введена неправильная буква класса. Повторите попытку.', reply_markup=characters())
-        await state.set_state(UserInfo.waiting_for_character.state)
+        await msg.answer('Введена неправильная буква класса. Повторите попытку.', reply_markup=class_letters())
+        await state.set_state(UserInfo.waiting_for_class_letter.state)
         return
 
     await state.set_state(UserInfo.finished.state)

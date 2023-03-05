@@ -1,7 +1,7 @@
 from aiogram import types
 
 
-def name(msg: types.Message) -> types.ReplyKeyboardMarkup:
+def full_name(msg: types.Message) -> types.ReplyKeyboardMarkup:
     types.ReplyKeyboardRemove()
 
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -23,12 +23,12 @@ def grades() -> types.ReplyKeyboardMarkup:
     return keyboard
 
 
-def characters() -> types.ReplyKeyboardMarkup:
+def class_letters() -> types.ReplyKeyboardMarkup:
     types.ReplyKeyboardRemove()
 
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-    _characters = ['А', 'Б', 'В', 'Г']
+    _class_letters = ['А', 'Б', 'В', 'Г']
 
-    keyboard.add(*_characters)
+    keyboard.add(*_class_letters)
 
     return keyboard
