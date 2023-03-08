@@ -130,3 +130,5 @@ dmypy.json
 
 .idea/
 config.py
+
+utils/db/models/school_bot.db

@@ -1,18 +1,18 @@
 from aiogram import types
 
 
-def full_name(msg: types.Message) -> types.ReplyKeyboardMarkup:
+def tg_name_btn(msg: types.Message) -> types.ReplyKeyboardMarkup:
     types.ReplyKeyboardRemove()
 
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    tg_name_btn = msg.from_user.full_name
+    _tg_name_btn = msg.from_user.full_name
 
-    keyboard.add(tg_name_btn)
+    keyboard.add(_tg_name_btn)
 
     return keyboard
 
 
-def grades() -> types.ReplyKeyboardMarkup:
+def grades_btn() -> types.ReplyKeyboardMarkup:
     types.ReplyKeyboardRemove()
 
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -23,7 +23,7 @@ def grades() -> types.ReplyKeyboardMarkup:
     return keyboard
 
 
-def class_letters() -> types.ReplyKeyboardMarkup:
+def class_letters_btn() -> types.ReplyKeyboardMarkup:
     types.ReplyKeyboardRemove()
 
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
